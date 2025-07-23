@@ -71,3 +71,33 @@ print(z2)
 z3 = torch.rand_like(tensor)
 torch.mul(tensor, tensor, out=z3)
 print(z3)
+
+
+
+#Single-element tensors
+agg = tensor.sum()
+print(agg, type(agg))
+agg_item = agg.item()
+print(agg_item, type(agg_item))
+
+
+#Bridge with NumPy
+# Tensors on the CPU and NumPy arrays can be shared and converted to each other using .numpy() and torch.from_numpy().
+# 共享内存，改变其中一个，另一个也会改变
+t = torch.ones(5)
+print(f"t: {t}")
+n = t.numpy()
+print(f"n: {n}")
+
+t.add_(1)
+print(f"t: {t}")
+print(f"n: {n}")
+
+
+#NumPy array to Tensor
+n = np.ones(5)
+t = torch.from_numpy(n)
+
+np.add(n, 1, out=n)
+print(f"t: {t}")
+print(f"n: {n}")
