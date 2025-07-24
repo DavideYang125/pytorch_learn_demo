@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 import torch
 from torch.utils.data import Dataset
 from torchvision import datasets
@@ -36,7 +37,7 @@ figure = plt.figure(figsize=(8, 8))
 cols, rows = 3, 3
 for i in range(1, cols * rows + 1):
     sample_idx = torch.randint(len(training_data), size=(1,)).item()
-    img, label = training_data[sample_idx]
+    img, label = training_data[sample_idx]  # 解包
     figure.add_subplot(rows, cols, i)
     plt.title(labels_map[label])
     plt.axis("off")
