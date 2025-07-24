@@ -20,7 +20,7 @@ torchvision.datasets.MNIST(
 # 替换为你的 MNIST 数据路径
 RAW_DIR = 'data/mnist_data/MNIST/raw'
 OUT_DIR = 'data/mnist_images/train'
-
+LABEL_OUT_DIR= 'data/mnist_images'
 IMG_FILE = os.path.join(RAW_DIR, 'train-images-idx3-ubyte.gz')
 LABEL_FILE = os.path.join(RAW_DIR, 'train-labels-idx1-ubyte.gz')
 
@@ -52,6 +52,6 @@ for i, (img, label) in enumerate(zip(images, labels)):
 
 # 生成 CSV 文件
 df = pd.DataFrame(records)
-df.to_csv(os.path.join(OUT_DIR, 'labels.csv'), index=False)
+df.to_csv(os.path.join(LABEL_OUT_DIR, 'train_labels.csv'), index=False)
 
 print(f'转换完成，共生成 {len(images)} 张图片和 CSV。')
