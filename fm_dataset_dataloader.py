@@ -7,6 +7,8 @@ import matplotlib.pyplot as plt
 from torch.utils.data import DataLoader
 from torch import nn 
 import os
+from neural_network_model import NeuralNetwork
+
 
 # 下载 FashionMNIST 训练集和测试集
 training_data = datasets.FashionMNIST(
@@ -67,24 +69,6 @@ test_dataloader = DataLoader(test_data, batch_size=64, shuffle=True)
 # print(f"Label: {label}")
 
 
-# 定义神经网络模型
-class NeuralNetwork(nn.Module):
-    def __init__(self):
-        super().__init__()
-        self.flatten = nn.Flatten()  # 将 1x28x28 展平为 784
-        self.linear_relu_stack = nn.Sequential(
-            nn.Linear(28*28, 128),
-            nn.ReLU(),
-            nn.Linear(128, 64),
-            nn.ReLU(),
-            nn.Linear(64, 10)  # 最终10类输出
-        )
-
-    def forward(self, x):
-        x = self.flatten(x)
-        logits = self.linear_relu_stack(x)
-        return logits
-
 
 # 设置训练设备、实例化模型和损失函数
 device = "cuda" if torch.cuda.is_available() else "cpu"
@@ -142,17 +126,18 @@ def test_loop(dataloader, model, loss_fn):
 
     test_loss /= num_batches
     correct /= size
-    print(f"Test Error: \n Accuracy: {(100*correct):>0.1f}%, Avg loss: {test_loss:>8f} \n")
+    print(f"Test Results: \n Accuracy: {(100*correct):>0.1f}%, Avg loss: {test_loss:>8f} \n")
 
 
 # 循环训练若干轮
-epochs = 5
+epochs = 10
 for t in range(epochs):
     print(f"Epoch {t+1}\n-------------------------------")
     train_loop(train_dataloader, model, loss_fn, optimizer)
     test_loop(test_dataloader, model, loss_fn)
 print("Done!")
 os.makedirs("saved_models", exist_ok=True)
-torch.save(model.state_dict(), "saved_models/fashion_mnist_model.pth") # 保存训练好的模型参数
+model_path = "saved_models/fashion_mnist_model.pth"
+torch.save(model.state_dict(), model_path) # 保存训练好的模型参数
 print("saved model!")
 
