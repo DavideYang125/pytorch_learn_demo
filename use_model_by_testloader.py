@@ -24,9 +24,6 @@ test_dataloader = DataLoader(test_data, batch_size=64, shuffle=True)
 data_iter = iter(test_dataloader)
 images, labels = next(data_iter)
 
-# 拿一张图来测试
-img = images[0].unsqueeze(0).to(device)  # 加 batch 维度
-label = labels[0]
 
 # 加载模型结构并加载权重
 model_path = "saved_models/fashion_mnist_model.pth"
@@ -41,13 +38,12 @@ with torch.no_grad():
     for images, labels in test_dataloader:
         images, labels = images.to(device), labels.to(device)
         outputs = model(images)
-        predicted = outputs.argmax(dim=1)
+        predicted = outputs.argmax(dim=1) # 选出分数最大的类别的索引
         
         # 统计正确数
         correct += (predicted == labels).sum().item()
         total += labels.size(0)
         
-        # 逐个打印结果（可以根据需要注释掉）
         for i in range(len(labels)):
             print(f"真实标签: {labels[i].item()}, 预测结果: {predicted[i].item()}")
 
